@@ -25,7 +25,7 @@
   "dependencies": {
     "bindings": "^1.2.1",
     "deasync": "https://github.com/abbr/deasync",
-    "ethereumjs-util": "^7.0.9",
+    "ethereumjs-util": "^5.0.1",
     "ethashjs": "git+https://github.com/StarMapBlock/etchashjs.git",
     "nan": "^2.2.1"
   },

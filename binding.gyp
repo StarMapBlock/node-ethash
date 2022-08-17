@@ -5,7 +5,10 @@
       "./src/ethash.cc",
       "./src/ethash-src/src/libethash/io.c",
       "./src/ethash-src/src/libethash/internal.c",
-      "./src/ethash-src/src/libethash/sha3.c"
+      "./src/ethash-src/src/libethash/sha3.c",
+      "./src/ethash-src/src/libethash/keccakf800.c",
+      "./src/ethash-src/src/libethash/keccak.cpp",
+      "./src/ethash-src/src/libethash/sha3.cpp"
     ],
     "cflags_c": [
       "-std=gnu99",

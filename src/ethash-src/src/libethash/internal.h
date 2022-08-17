@@ -82,6 +82,13 @@ struct ethash_light {
 	void* cache;
 	uint64_t cache_size;
 	uint64_t block_number;
+	        uint64_t epoch;
+
+    	// Used for fast division
+    	uint32_t num_parent_nodes;
+    	uint32_t reciprocal;
+    	uint32_t increment;
+    	uint32_t shift;
 };
 
 /**
@@ -138,6 +145,7 @@ ethash_full_t ethash_full_new_internal(
 	char const* dirname,
 	ethash_h256_t const seed_hash,
 	uint64_t full_size,
+
 	ethash_light_t const light,
 	ethash_callback_t callback
 );
@@ -145,6 +153,21 @@ ethash_full_t ethash_full_new_internal(
 void ethash_calculate_dag_item(
 	node* const ret,
 	uint32_t node_index,
+		uint32_t num_parents,
+    	ethash_light_t const cache
+    );
+
+    void ethash_calculate_dag_item_opt(
+    	node* const ret,
+    	uint32_t node_index,
+    	uint32_t num_parents,
+    	ethash_light_t const cache
+    );
+
+    void ethash_calculate_dag_item4_opt(
+    	node* ret,
+    	uint32_t node_index,
+    	uint32_t num_parents,
 	ethash_light_t const cache
 );
 

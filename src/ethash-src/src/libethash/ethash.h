@@ -32,6 +32,8 @@
 #define ETHASH_CACHE_BYTES_INIT 1073741824U // 2**24
 #define ETHASH_CACHE_BYTES_GROWTH 131072U  // 2**17
 #define ETHASH_EPOCH_LENGTH 30000U
+#define ETCHASH_EPOCH_LENGTH 60000U
+#define ETCHASH_EPOCH_HEIGHT 11700000U
 #define ETHASH_MIX_BYTES 128
 #define ETHASH_HASH_BYTES 64
 #define ETHASH_DATASET_PARENTS 256
@@ -74,7 +76,23 @@ typedef struct ethash_return_value {
  * @return               Newly allocated ethash_light handler or NULL in case of
  *                       ERRNOMEM or invalid parameters used for @ref ethash_compute_cache_nodes()
  */
-ethash_light_t ethash_light_new(uint64_t block_number);
+//ethash_light_t ethash_light_new(uint64_t block_number);
+
+
+ethash_light_t ethash_light_new(uint64_t block_number, uint64_t epoch, uint64_t epoch2);
+/**
+ */
+bool ethash_compute_cache_nodes(
+    void* nodes,
+    uint64_t cache_size,
+    ethash_h256_t const* seed
+);
+/**
+
+
+
+
+
 /**
  * Frees a previously allocated ethash_light handler
  * @param light        The light handler to free
@@ -140,7 +158,19 @@ uint64_t ethash_full_dag_size(ethash_full_t full);
 /**
  * Calculate the seedhash for a given block number
  */
-ethash_h256_t ethash_get_seedhash(uint64_t block_number);
+//ethash_h256_t ethash_get_seedhash(uint64_t block_number);
+
+/**
+ * Calculate the seedhash for a given epoch
+ */
+ethash_h256_t ethash_get_seedhash(uint64_t epoch);
+
+/**
+ * KeccakF800 for ProgPoW
+ */
+void ethash_keccakf800(uint32_t state[25]);
+
+
 
 #ifdef __cplusplus
 }

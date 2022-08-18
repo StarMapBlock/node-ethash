@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <node.h>
 #include <nan.h>
-
+#include <v8.h>
+#include <stdexcept>
 #include "endian.h"
 #include "util.h"
 #include "messages.h"
@@ -91,4 +92,4 @@ NAN_MODULE_INIT(Init) {
    Nan::Set(target, Nan::New("etchash").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(etchash)).ToLocalChecked());
 }
 
-NODE_MODULE(ethash, Init);
+NODE_MODULE(etchash, Init);

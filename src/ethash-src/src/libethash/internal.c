@@ -1,15 +1,48 @@
+/*
+  This file is part of ethash.
+
+  ethash is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  ethash is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with cpp-ethereum.	If not, see <http://www.gnu.org/licenses/>.
+*/
+/** @file internal.c
+* @author Tim Hughes <tim@twistedfury.com>
+* @author Matthew Wampler-Doty
+* @date 2015
+*/
+
+#include <assert.h>
+#include <inttypes.h>
+#include <stddef.h>
+#include <errno.h>
+#include <math.h>
+#include <stdlib.h>
+#include "ethash.h"
+#include "fnv.h"
+#include "endian.h"
+#include "internal.h"
+#include "data_sizes.h"
 #include "sha3.h"
 
 #if defined(_M_X64) || defined(__x86_64__) || defined(__SSE2__)
-	#ifdef __GNUC__
-		#include <x86intrin.h>
-	#else
-		#include <intrin.h>
-	#endif
-
-	#define kp_prefetch(x) _mm_prefetch((x), _MM_HINT_T0);
+#ifdef __GNUC__
+#include <x86intrin.h>
 #else
-	#define kp_prefetch(x)
+#include <intrin.h>
+#endif
+
+#define kp_prefetch(x) _mm_prefetch((x), _MM_HINT_T0);
+#else
+#define kp_prefetch(x)
 #endif
 
 #define SHA3_256(a, b, c) sha3_HashBuffer(256, SHA3_FLAGS_KECCAK, b, c, a, 32)
@@ -17,14 +50,14 @@
 
 uint64_t ethash_get_datasize(uint64_t const epoch)
 {
-        assert(epoch < 2048);
-        return dag_sizes[epoch];
+	assert(epoch < 2048);
+	return dag_sizes[epoch];
 }
 
 uint64_t ethash_get_cachesize(uint64_t const epoch)
 {
-        assert(epoch < 2048);
-        return cache_sizes[epoch];
+	assert(epoch < 2048);
+	return cache_sizes[epoch];
 }
 
 // Follows Sergio's "STRICT MEMORY HARD HASHING FUNCTIONS" (2014)
@@ -39,7 +72,7 @@ bool ethash_compute_cache_nodes(
 	if (cache_size % sizeof(node) != 0) {
 		return false;
 	}
-	uint32_t const num_nodes = (uint32_t) (cache_size / sizeof(node));
+	uint32_t const num_nodes = (uint32_t)(cache_size / sizeof(node));
 
 	node* nodes = (node*)nodes_ptr;
 	SHA3_512(nodes[0].bytes, (uint8_t*)seed, 32);
@@ -72,8 +105,8 @@ void ethash_calculate_dag_item(
 	ethash_light_t const light
 )
 {
-	uint32_t num_parent_nodes = (uint32_t) (light->cache_size / sizeof(node));
-	node const* cache_nodes = (node const *) light->cache;
+	uint32_t num_parent_nodes = (uint32_t)(light->cache_size / sizeof(node));
+	node const* cache_nodes = (node const *)light->cache;
 	node const* init = &cache_nodes[node_index % num_parent_nodes];
 	memcpy(ret, init, sizeof(node));
 	ret->words[0] ^= node_index;
@@ -107,7 +140,7 @@ void ethash_calculate_dag_item(
 			ret->xmm[2] = xmm2;
 			ret->xmm[3] = xmm3;
 		}
-		#else
+#else
 		{
 			for (unsigned w = 0; w != NODE_WORDS; ++w) {
 				ret->words[w] = fnv_hash(ret->words[w], parent->words[w]);
@@ -195,7 +228,7 @@ bool ethash_compute_full_data(
 		return false;
 	}
 	uint32_t const max_n = (uint32_t)(full_size / sizeof(node));
-	node* full_nodes = (node*) mem;
+	node* full_nodes = (node*)mem;
 	double const progress_change = 1.0f / max_n;
 	double progress = 0.0f;
 	// now compute full nodes
@@ -241,7 +274,7 @@ static bool ethash_hash(
 	}
 
 	unsigned const page_size = sizeof(uint32_t) * MIX_WORDS;
-	unsigned const num_full_pages = (unsigned) (full_size / page_size);
+	unsigned const num_full_pages = (unsigned)(full_size / page_size);
 
 	for (unsigned i = 0; i != ETHASH_ACCESSES; ++i) {
 		uint32_t const index = fnv_hash(s_mix->words[0] ^ i, mix->words[i % MIX_WORDS]) % num_full_pages;
@@ -251,7 +284,8 @@ static bool ethash_hash(
 			node tmp_node;
 			if (full_nodes) {
 				dag_node = &full_nodes[MIX_NODES * index + n];
-			} else {
+			}
+			else {
 				ethash_calculate_dag_item(&tmp_node, index * MIX_NODES + n, ETHASH_DATASET_PARENTS, light);
 				dag_node = &tmp_node;
 			}
@@ -268,7 +302,7 @@ static bool ethash_hash(
 				mix[n].xmm[2] = _mm_xor_si128(xmm2, dag_node->xmm[2]);
 				mix[n].xmm[3] = _mm_xor_si128(xmm3, dag_node->xmm[3]);
 			}
-			#else
+#else
 			{
 				for (unsigned w = 0; w != NODE_WORDS; ++w) {
 					mix[n].words[w] = fnv_hash(mix[n].words[w], dag_node->words[w]);
@@ -359,12 +393,12 @@ fail_free_light:
 
 ethash_light_t ethash_light_new(uint64_t block_number, uint64_t epoch, uint64_t epoch2)
 {
-        ethash_h256_t seedhash = ethash_get_seedhash(epoch);
-        ethash_light_t ret;
-        ret = ethash_light_new_internal(ethash_get_cachesize(epoch2), &seedhash);
-        ret->block_number = block_number;
-        ret->epoch = epoch2;
-        return ret;
+	ethash_h256_t seedhash = ethash_get_seedhash(epoch);
+	ethash_light_t ret;
+	ret = ethash_light_new_internal(ethash_get_cachesize(epoch2), &seedhash);
+	ret->block_number = block_number;
+	ret->epoch = epoch2;
+	return ret;
 }
 
 void ethash_light_delete(ethash_light_t light)

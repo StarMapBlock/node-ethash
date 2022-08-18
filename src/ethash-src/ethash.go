@@ -51,7 +51,7 @@ var (
 )
 
 const (
-	epochLength         uint64     = 30000
+	epochLength         uint64     = 60000
 	cacheSizeForTesting C.uint64_t = 1024
 	dagSizeForTesting   C.uint64_t = 1024 * 32
 )

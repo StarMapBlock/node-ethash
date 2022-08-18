@@ -1,4 +1,4 @@
-
+#include "sha3.h"
 
 #if defined(_M_X64) || defined(__x86_64__) || defined(__SSE2__)
 	#ifdef __GNUC__

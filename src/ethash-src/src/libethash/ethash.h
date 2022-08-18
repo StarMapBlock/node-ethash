@@ -24,7 +24,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stddef.h>
-#include "compiler.h"
+//#include "compiler.h"
 
 #define ETHASH_REVISION 23
 #define ETHASH_DATASET_BYTES_INIT 1073741824U // 2**30

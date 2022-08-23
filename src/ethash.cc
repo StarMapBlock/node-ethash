@@ -26,7 +26,7 @@ NAN_METHOD(ethash_light_new) {
 
   // get new ethash_light handler
 
-  const uint64_t epoch = block_number / ETCASH_EPOCH_LENGTH;
+  const uint64_t epoch = block_number / ETCHASH_EPOCH_LENGTH;
   ethash_light_t light = ethash_light_new(block_number,epoch,epoch);
   if (light == NULL) {
     return Nan::ThrowError(LIGHTNEW_NOMEM);

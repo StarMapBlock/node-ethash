@@ -12,7 +12,7 @@
 #include "libethash/internal.h"
 #undef node
 #define node node
-
+#define ETCHASH_EPOCH_LENGTH 60000U
 // ethash_light_new(block_number)
 // returns: { block_number: Number, cache: Buffer }
 NAN_METHOD(ethash_light_new) {
@@ -25,7 +25,9 @@ NAN_METHOD(ethash_light_new) {
   const uint64_t block_number = block_number_v8->IntegerValue();
 
   // get new ethash_light handler
-  ethash_light_t light = ethash_light_new(block_number);
+
+  const uint64_t epoch = block_number / ETCASH_EPOCH_LENGTH;
+  ethash_light_t light = ethash_light_new(block_number,epoch,epoch);
   if (light == NULL) {
     return Nan::ThrowError(LIGHTNEW_NOMEM);
   }

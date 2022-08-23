@@ -20,6 +20,7 @@
  * Aug 2015. Andrey Jivsov. crypto@brainhub.org
  * ---------------------------------------------------------------------- */
 
+
 /* 'Words' here refers to uint64_t */
 #define SHA3_KECCAK_SPONGE_WORDS \
 	(((1600)/8/*bits to byte*/)/sizeof(uint64_t))

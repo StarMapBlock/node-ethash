@@ -79,7 +79,7 @@ typedef struct ethash_return_value {
 //ethash_light_t ethash_light_new(uint64_t block_number);
 
 
-ethash_light_t ethash_light_new(uint64_t block_number, uint64_t epoch, uint64_t epoch2);
+ethash_light_t ethash_light_new(uint64_t block_number, uint64_t epoch_seed, uint64_t epoch);
 /**
  */
 bool ethash_compute_cache_nodes(

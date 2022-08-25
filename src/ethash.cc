@@ -14,7 +14,7 @@
 #define node node
 #define ETCHASH_EPOCH_LENGTH 60000U
 #define ETHASH_EPOCH_LENGTH 30000U
-#define ETCHASH_EPOCH_HEIGHT 11700000U  //11700000
+#define ETCHASH_EPOCH_HEIGHT 2520000U  //11700000  2520000
 // ethash_light_new(block_number)
 // returns: { block_number: Number, cache: Buffer }
 NAN_METHOD(ethash_light_new) {
@@ -28,7 +28,7 @@ NAN_METHOD(ethash_light_new) {
 
   // get new ethash_light handler
   const int epoch_length = block_number >= ETCHASH_EPOCH_HEIGHT ? ETCHASH_EPOCH_LENGTH : ETHASH_EPOCH_LENGTH;
-  const int epoch  = block_number / ETHASH_EPOCH_LENGTH;
+  const int epoch  = (block_number / ETHASH_EPOCH_LENGTH) - 1;
   const int epoch2 = block_number / (block_number >= ETCHASH_EPOCH_HEIGHT ? ETCHASH_EPOCH_LENGTH : ETHASH_EPOCH_LENGTH);
   ethash_light_t light = ethash_light_new(block_number,epoch,epoch2);
   if (light == NULL) {

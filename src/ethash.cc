@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <node.h>
 #include <nan.h>
-
+#include <v8.h>
 #include "endian.h"
 #include "util.h"
 #include "messages.h"
@@ -238,7 +238,7 @@ NAN_MODULE_INIT(Init) {
   Nan::Export(target, "ethash_light_new_internal", ethash_light_new_internal);
   Nan::Export(target, "ethash_light_compute_internal", ethash_light_compute_internal);
   Nan::Export(target, "etchash", etchash);
-//  Nan::Set(target, Nan::New("etchash").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(etchash)).ToLocalChecked());
+  Nan::Set(target, Nan::New("etchash").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(etchash)).ToLocalChecked());
 }
 
 NODE_MODULE(ethash, Init);

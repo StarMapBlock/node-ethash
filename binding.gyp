@@ -11,7 +11,12 @@
       "./src/ethash-src/src/libethash/sha3.cpp"
     ],
     "cflags_c": [
-      "-std=gnu11      -fPIC -DNDEBUG -Ofast -fno-fast-math -w"
+      "-std=gnu99",
+      "-Wall",
+      "-Wno-maybe-uninitialized",
+      "-Wno-uninitialized",
+      "-Wno-unused-function",
+      "-Wextra"
     ],
     "cflags_cc+": [
       "-fexceptions",
@@ -20,13 +25,9 @@
     "cflags_cc!": [
       "-fno-exceptions"
     ],
-    "cflags_cc": [
-     "-std=gnu++11 -s -fPIC -DNDEBUG -Ofast -fno-fast-math -fexceptions -fno-rtti -Wno-class-memaccess -w"
-    ],
     "include_dirs": [
       "./src/ethash-src/src",
       "<!(node -e \"require('nan')\")"
-    ],
-    'cflags!': [ '-fexceptions' ]
+    ]
   }]
 }

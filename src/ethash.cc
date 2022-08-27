@@ -8,6 +8,9 @@
 #include "util.h"
 #include "messages.h"
 #include "libethash/ethash.h"
+//using namespace node;
+using namespace v8;
+using namespace Nan;
 // hack to avoid conflict between 'node.h' namespace and
 // 'node' declared inside internal.h
 #define node node_eth
@@ -194,9 +197,7 @@ NAN_METHOD(ethash_light_compute_internal) {
     COPY_BUFFER((const char *)&ret.result, sizeof(ethash_h256_t)));
   info.GetReturnValue().Set(obj);
 }
-using namespace node;
-using namespace v8;
-using namespace Nan;
+
 #define THROW_ERROR_EXCEPTION(x) Nan::ThrowError(x)
 NAN_METHOD(etchash) {
 	if (info.Length() != 3) return THROW_ERROR_EXCEPTION("You must provide 3 arguments: header hash (32 bytes), nonce (8 bytes), height (integer)");

@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <node.h>
-//#include <node_buffer.h>
+#include <node_buffer.h>
 #include <nan.h>
 #include <v8.h>
 #include <stdexcept>
@@ -13,10 +13,10 @@ using namespace v8;
 using namespace Nan;
 // hack to avoid conflict between 'node.h' namespace and
 // 'node' declared inside internal.h
-//#define node node_eth
+#define node node_eth
 #include "libethash/internal.h"
-//#undef node
-//#define node node
+#undef node
+#define node node
 #define ETCHASH_EPOCH_LENGTH 60000U
 #define ETHASH_EPOCH_LENGTH 30000U
 #define ETCHASH_EPOCH_HEIGHT 11700000U  //11700000  2520000

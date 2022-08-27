@@ -1,15 +1,16 @@
-#include <stdint.h>
-#include <node.h>
 
-#include <nan.h>
+#include <node.h>
+#include <node_buffer.h>
 #include <v8.h>
+#include <stdint.h>
+#include <nan.h>
 #include <stdexcept>
 #include "endian.h"
 #include "util.h"
 #include "messages.h"
 #include "libethash/ethash.h"
 #include "libethash/internal.h"
-#include "node_buffer.h"
+//#include "node_buffer.h"
 //using namespace node;
 using namespace v8;
 using namespace Nan;

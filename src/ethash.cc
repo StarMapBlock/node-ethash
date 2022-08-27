@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <node.h>
-#include <node_buffer.h>
+//#include <node_buffer.h>
 #include <nan.h>
 #include <v8.h>
 #include <stdexcept>

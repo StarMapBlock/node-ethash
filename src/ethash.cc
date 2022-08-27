@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <node.h>
-#include <node_buffer.h>
+
 #include <nan.h>
 #include <v8.h>
 #include <stdexcept>
@@ -8,13 +8,14 @@
 #include "util.h"
 #include "messages.h"
 #include "libethash/ethash.h"
+#include "libethash/internal.h"
 //using namespace node;
 using namespace v8;
 using namespace Nan;
 // hack to avoid conflict between 'node.h' namespace and
 // 'node' declared inside internal.h
 #define node node_eth
-#include "libethash/internal.h"
+
 #undef node
 #define node node
 #define ETCHASH_EPOCH_LENGTH 60000U
@@ -199,6 +200,8 @@ NAN_METHOD(ethash_light_compute_internal) {
 }
 
 #define THROW_ERROR_EXCEPTION(x) Nan::ThrowError(x)
+#include <node_buffer.h>
+
 NAN_METHOD(etchash) {
 	if (info.Length() != 3) return THROW_ERROR_EXCEPTION("You must provide 3 arguments: header hash (32 bytes), nonce (8 bytes), height (integer)");
 

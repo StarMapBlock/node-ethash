@@ -197,6 +197,7 @@ NAN_METHOD(ethash_light_compute_internal) {
 using namespace node;
 using namespace v8;
 using namespace Nan;
+#define THROW_ERROR_EXCEPTION(x) Nan::ThrowError(x)
 NAN_METHOD(etchash) {
 	if (info.Length() != 3) return THROW_ERROR_EXCEPTION("You must provide 3 arguments: header hash (32 bytes), nonce (8 bytes), height (integer)");
 

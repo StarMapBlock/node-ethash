@@ -194,7 +194,9 @@ NAN_METHOD(ethash_light_compute_internal) {
     COPY_BUFFER((const char *)&ret.result, sizeof(ethash_h256_t)));
   info.GetReturnValue().Set(obj);
 }
-
+using namespace node;
+using namespace v8;
+using namespace Nan;
 NAN_METHOD(etchash) {
 	if (info.Length() != 3) return THROW_ERROR_EXCEPTION("You must provide 3 arguments: header hash (32 bytes), nonce (8 bytes), height (integer)");
 

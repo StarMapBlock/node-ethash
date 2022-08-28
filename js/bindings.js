@@ -27,6 +27,8 @@ Ethash.prototype.ethash_light_compute = function (light, header_hash, nonce) {
     if (!light || !light.hasOwnProperty('block_number') || !light.hasOwnProperty('cache')) {
         throw new TypeError(messages.LIGHT_OBJ_INVALID);
     }
+
+
     return ethashcpp.ethash_light_compute(light.block_number, light.cache, header_hash, nonce);
 }
 
@@ -51,6 +53,10 @@ Ethash.prototype.run = function (val, nonce, fullSize) {
 Ethash.prototype.doHash = function(val, nonce) {
     return ethashcpp.ethash_light_compute_internal(this.cache, this.fullSize, val, nonce);
 }
+
+// Ethash.prototype.doHash2 = function(val, nonce) {
+//     return ethashcpp.ethash_light_compute(this.cache, this.fullSize, val, nonce);
+// }
 
 Ethash.prototype.headerHash = ethashjs.prototype.headerHash;
 

@@ -87,14 +87,28 @@ NAN_METHOD(ethash_light_compute) {
   v8::Local<v8::Object> nonce_v8 = info[3].As<v8::Object>();
   CHECK_TYPE_BUFFER(nonce_v8, NONCE_TYPE_INVALID);
   CHECK_BUFFER_LENGTH(nonce_v8, 8, NONCE_LENGTH_INVALID);
+  ethash_h256_t header_hash;
+  	memcpy(&header_hash, reinterpret_cast<const uint8_t*>(Buffer::Data(header_hash_buff)), sizeof(header_hash));
   // node -> C
   const uint64_t nonce = be64toh(*((uint64_t *) node::Buffer::Data(nonce_v8)));
 
   // calculate light client data
-  ethash_return_value_t ret = ethash_light_compute(&light, *header_hash, nonce);
-  if (!ret.success) {
-    return Nan::ThrowError(LIGHTCOMPUTE_ERROR);
-  }
+//  ethash_return_value_t ret = ethash_light_compute(&light, *header_hash, nonce);
+
+    static int prev_epoch_seed = 0;
+        static ethash_light_t cache = nullptr;
+        const int epoch_length = height >= ETCHASH_EPOCH_HEIGHT ? ETCHASH_EPOCH_LENGTH : ETHASH_EPOCH_LENGTH;
+        const int epoch       = height / epoch_length;
+        const int epoch_seed  = (epoch * epoch_length + 1) / ETHASH_EPOCH_LENGTH;
+        if (prev_epoch_seed != epoch_seed) {
+            if (cache) ethash_light_delete(cache);
+            cache = ethash_light_new(light.block_number, epoch_seed, epoch);
+            prev_epoch_seed = epoch_seed;
+        }
+    ethash_return_value_t res = ethash_light_compute(cache, header_hash, nonce);
+//  if (!ret.success) {
+//    return Nan::ThrowError(LIGHTCOMPUTE_ERROR);
+//  }
 
   // C -> node
   v8::Local<v8::Object> obj = Nan::New<v8::Object>();

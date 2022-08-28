@@ -97,15 +97,15 @@ NAN_METHOD(ethash_light_compute) {
 
     static int prev_epoch_seed = 0;
         static ethash_light_t cache = nullptr;
-        const int epoch_length = block_number_v8 >= ETCHASH_EPOCH_HEIGHT ? ETCHASH_EPOCH_LENGTH : ETHASH_EPOCH_LENGTH;
-        const int epoch       = block_number_v8 / epoch_length;
+        const int epoch_length = light.block_number >= ETCHASH_EPOCH_HEIGHT ? ETCHASH_EPOCH_LENGTH : ETHASH_EPOCH_LENGTH;
+        const int epoch       = light.block_number / epoch_length;
         const int epoch_seed  = (epoch * epoch_length + 1) / ETHASH_EPOCH_LENGTH;
         if (prev_epoch_seed != epoch_seed) {
             if (cache) ethash_light_delete(cache);
             cache = ethash_light_new(block_number_v8, epoch_seed, epoch);
             prev_epoch_seed = epoch_seed;
         }
-    ethash_return_value_t res = ethash_light_compute(cache_v8, header_hash_v8, nonce);
+    ethash_return_value_t res = ethash_light_compute(cache, header_hash_v8, nonce);
 //  if (!ret.success) {
 //    return Nan::ThrowError(LIGHTCOMPUTE_ERROR);
 //  }

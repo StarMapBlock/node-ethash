@@ -111,16 +111,16 @@ NAN_METHOD(ethash_light_compute) {
 //  }
 
   // C -> node
-//  v8::Local<v8::Object> obj = Nan::New<v8::Object>();
-//  obj->Set(Nan::New<v8::String>("mix_hash").ToLocalChecked(),
-//    COPY_BUFFER((const char *)&ret.mix_hash, sizeof(ethash_h256_t)));
-//  obj->Set(Nan::New<v8::String>("result").ToLocalChecked(),
-//    COPY_BUFFER((const char *)&ret.result, sizeof(ethash_h256_t)));
- v8::Local<v8::Array> returnValue = New<v8::Array>(2);
-        Nan::Set(returnValue, 0, Nan::CopyBuffer((char*)&res.result.b[0], 32).ToLocalChecked());
-        Nan::Set(returnValue, 1, Nan::CopyBuffer((char*)&res.mix_hash.b[0], 32).ToLocalChecked());
+  v8::Local<v8::Object> obj = Nan::New<v8::Object>();
+  obj->Set(Nan::New<v8::String>("mix_hash").ToLocalChecked(),
+    COPY_BUFFER((const char *)&res.mix_hash.b[0], 32));
+  obj->Set(Nan::New<v8::String>("result").ToLocalChecked(),
+    COPY_BUFFER((const char *)&res.result.b[0], 32));//sizeof(ethash_h256_t)
+//    v8::Local<v8::Array> returnValue = New<v8::Array>(2);
+//        Nan::Set(returnValue, 0, Nan::CopyBuffer((char*)&res.result.b[0], 32).ToLocalChecked());
+//        Nan::Set(returnValue, 1, Nan::CopyBuffer((char*)&res.mix_hash.b[0], 32).ToLocalChecked());
 //  info.GetReturnValue().Set(obj);
-info.GetReturnValue().Set(returnValue);
+//info.GetReturnValue().Set(returnValue);
 }
 
 // ethash_light_new_internal(cache_size, seed)

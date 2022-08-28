@@ -16,11 +16,11 @@
 // hack to avoid conflict between 'node.h' namespace and
 // 'node' declared inside internal.h
 #define node node_eth
-
+#include "libethash/internal.h"
 #undef node
 #define node node
 
-#include "libethash/internal.h"
+
 #define ETCHASH_EPOCH_LENGTH 60000U
 #define ETHASH_EPOCH_LENGTH 30000U
 #define ETCHASH_EPOCH_HEIGHT 11700000U  //11700000  2520000

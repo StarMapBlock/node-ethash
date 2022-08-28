@@ -204,43 +204,43 @@ NAN_METHOD(ethash_light_compute_internal) {
 #define THROW_ERROR_EXCEPTION(x) Nan::ThrowError(x)
 //#include <node_buffer.h>
 
-NAN_METHOD(etchash) {
-	if (info.Length() != 3) return THROW_ERROR_EXCEPTION("You must provide 3 arguments: header hash (32 bytes), nonce (8 bytes), height (integer)");
-
-	v8::Isolate *isolate = v8::Isolate::GetCurrent();
-
-	Local<Object> header_hash_buff = info[0]->ToObject(isolate->GetCurrentContext()).ToLocalChecked();
-	if (!Buffer::HasInstance(header_hash_buff)) return THROW_ERROR_EXCEPTION("Argument 1 should be a buffer object.");
-	if (Buffer::Length(header_hash_buff) != 32) return THROW_ERROR_EXCEPTION("Argument 1 should be a 32 bytes long buffer object.");
-
-	Local<Object> nonce_buff = info[1]->ToObject(isolate->GetCurrentContext()).ToLocalChecked();
-	if (!Buffer::HasInstance(nonce_buff)) return THROW_ERROR_EXCEPTION("Argument 2 should be a buffer object.");
-	if (Buffer::Length(nonce_buff) != 8) return THROW_ERROR_EXCEPTION("Argument 2 should be a 8 bytes long buffer object.");
-
-        if (!info[2]->IsNumber()) return THROW_ERROR_EXCEPTION("Argument 3 should be a number");
-        const int height = Nan::To<int>(info[2]).FromMaybe(0);
-
-	ethash_h256_t header_hash;
-	memcpy(&header_hash, reinterpret_cast<const uint8_t*>(Buffer::Data(header_hash_buff)), sizeof(header_hash));
-        const uint64_t nonce = __builtin_bswap64(*(reinterpret_cast<const uint64_t*>(Buffer::Data(nonce_buff))));
-
-        static int prev_epoch_seed = 0;
-        static ethash_light_t cache = nullptr;
-        const int epoch_length = height >= ETCHASH_EPOCH_HEIGHT ? ETCHASH_EPOCH_LENGTH : ETHASH_EPOCH_LENGTH;
-        const int epoch       = height / epoch_length;
-        const int epoch_seed  = (epoch * epoch_length + 1) / ETHASH_EPOCH_LENGTH;
-        if (prev_epoch_seed != epoch_seed) {
-            if (cache) ethash_light_delete(cache);
-            cache = ethash_light_new(height, epoch_seed, epoch);
-            prev_epoch_seed = epoch_seed;
-        }
-        ethash_return_value_t res = ethash_light_compute(cache, header_hash, nonce);
-
-        v8::Local<v8::Array> returnValue = New<v8::Array>(2);
-        Nan::Set(returnValue, 0, Nan::CopyBuffer((char*)&res.result.b[0], 32).ToLocalChecked());
-        Nan::Set(returnValue, 1, Nan::CopyBuffer((char*)&res.mix_hash.b[0], 32).ToLocalChecked());
-	info.GetReturnValue().Set(returnValue);
-}
+//NAN_METHOD(etchash) {
+//	if (info.Length() != 3) return THROW_ERROR_EXCEPTION("You must provide 3 arguments: header hash (32 bytes), nonce (8 bytes), height (integer)");
+//
+//	v8::Isolate *isolate = v8::Isolate::GetCurrent();
+//
+//	Local<Object> header_hash_buff = info[0]->ToObject(isolate->GetCurrentContext()).ToLocalChecked();
+//	if (!Buffer::HasInstance(header_hash_buff)) return THROW_ERROR_EXCEPTION("Argument 1 should be a buffer object.");
+//	if (Buffer::Length(header_hash_buff) != 32) return THROW_ERROR_EXCEPTION("Argument 1 should be a 32 bytes long buffer object.");
+//
+//	Local<Object> nonce_buff = info[1]->ToObject(isolate->GetCurrentContext()).ToLocalChecked();
+//	if (!Buffer::HasInstance(nonce_buff)) return THROW_ERROR_EXCEPTION("Argument 2 should be a buffer object.");
+//	if (Buffer::Length(nonce_buff) != 8) return THROW_ERROR_EXCEPTION("Argument 2 should be a 8 bytes long buffer object.");
+//
+//        if (!info[2]->IsNumber()) return THROW_ERROR_EXCEPTION("Argument 3 should be a number");
+//        const int height = Nan::To<int>(info[2]).FromMaybe(0);
+//
+//	ethash_h256_t header_hash;
+//	memcpy(&header_hash, reinterpret_cast<const uint8_t*>(Buffer::Data(header_hash_buff)), sizeof(header_hash));
+//        const uint64_t nonce = __builtin_bswap64(*(reinterpret_cast<const uint64_t*>(Buffer::Data(nonce_buff))));
+//
+//        static int prev_epoch_seed = 0;
+//        static ethash_light_t cache = nullptr;
+//        const int epoch_length = height >= ETCHASH_EPOCH_HEIGHT ? ETCHASH_EPOCH_LENGTH : ETHASH_EPOCH_LENGTH;
+//        const int epoch       = height / epoch_length;
+//        const int epoch_seed  = (epoch * epoch_length + 1) / ETHASH_EPOCH_LENGTH;
+//        if (prev_epoch_seed != epoch_seed) {
+//            if (cache) ethash_light_delete(cache);
+//            cache = ethash_light_new(height, epoch_seed, epoch);
+//            prev_epoch_seed = epoch_seed;
+//        }
+//        ethash_return_value_t res = ethash_light_compute(cache, header_hash, nonce);
+//
+//        v8::Local<v8::Array> returnValue = New<v8::Array>(2);
+//        Nan::Set(returnValue, 0, Nan::CopyBuffer((char*)&res.result.b[0], 32).ToLocalChecked());
+//        Nan::Set(returnValue, 1, Nan::CopyBuffer((char*)&res.mix_hash.b[0], 32).ToLocalChecked());
+//	info.GetReturnValue().Set(returnValue);
+//}
 
 
 NAN_MODULE_INIT(Init) {
@@ -248,7 +248,7 @@ NAN_MODULE_INIT(Init) {
   Nan::Export(target, "ethash_light_compute", ethash_light_compute);
   Nan::Export(target, "ethash_light_new_internal", ethash_light_new_internal);
   Nan::Export(target, "ethash_light_compute_internal", ethash_light_compute_internal);
-  Nan::Export(target, "etchash", etchash);
+//  Nan::Export(target, "etchash", etchash);
  // Nan::Set(target, Nan::New("etchash").ToLocalChecked(), Nan::GetFunction(Nan::New<FunctionTemplate>(etchash)).ToLocalChecked());
 }
 

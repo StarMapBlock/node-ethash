@@ -12,8 +12,8 @@
 #include "libethash/internal.h"
 //#include "node_buffer.h"
 //using namespace node;
-using namespace v8;
-using namespace Nan;
+//using namespace v8;
+//using namespace Nan;
 // hack to avoid conflict between 'node.h' namespace and
 // 'node' declared inside internal.h
 #define node node_eth
@@ -201,7 +201,7 @@ NAN_METHOD(ethash_light_compute_internal) {
   info.GetReturnValue().Set(obj);
 }
 
-#define THROW_ERROR_EXCEPTION(x) Nan::ThrowError(x)
+//#define THROW_ERROR_EXCEPTION(x) Nan::ThrowError(x)
 //#include <node_buffer.h>
 
 //NAN_METHOD(etchash) {

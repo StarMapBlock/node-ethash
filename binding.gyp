@@ -20,7 +20,7 @@
     ],
     "cflags_cc+": [
       "-fexceptions",
-      "-std=c++11 -s  -DNDEBUG -w"
+      "-std=c++11"
     ],
     "cflags_cc!": [
       "-fno-exceptions"

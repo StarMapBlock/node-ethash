@@ -27,7 +27,7 @@ Ethash.prototype.ethash_light_compute = function (light, header_hash, nonce) {
     if (!light || !light.hasOwnProperty('block_number') || !light.hasOwnProperty('cache')) {
         throw new TypeError(messages.LIGHT_OBJ_INVALID);
     }
-
+    console.log('light:'+JSON.stringify(light)+',headerhash:'+header_hash+'.nonce:'+nonce)
 
     return ethashcpp.ethash_light_compute(light.block_number, light.cache, header_hash, nonce);
 }

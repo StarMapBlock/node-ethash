@@ -9,7 +9,6 @@
 #include "util.h"
 #include "messages.h"
 #include "libethash/ethash.h"
-#include "libethash/internal.h"
 //#include "node_buffer.h"
 //using namespace node;
 //using namespace v8;
@@ -20,6 +19,8 @@
 
 #undef node
 #define node node
+
+#include "libethash/internal.h"
 #define ETCHASH_EPOCH_LENGTH 60000U
 #define ETHASH_EPOCH_LENGTH 30000U
 #define ETCHASH_EPOCH_HEIGHT 11700000U  //11700000  2520000

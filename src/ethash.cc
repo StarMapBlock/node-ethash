@@ -102,7 +102,7 @@ NAN_METHOD(ethash_light_compute) {
         const int epoch_seed  = (epoch * epoch_length + 1) / ETHASH_EPOCH_LENGTH;
         if (prev_epoch_seed != epoch_seed) {
             if (cache) ethash_light_delete(cache);
-            cache = ethash_light_new(block_number_v8, epoch_seed, epoch);
+            cache = ethash_light_new(light.block_number, epoch_seed, epoch);
             prev_epoch_seed = epoch_seed;
         }
     ethash_return_value_t res = ethash_light_compute(cache, header_hash_v8, nonce);

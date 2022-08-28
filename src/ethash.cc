@@ -105,7 +105,7 @@ NAN_METHOD(ethash_light_compute) {
             cache = ethash_light_new(light.block_number, epoch_seed, epoch);
             prev_epoch_seed = epoch_seed;
         }
-    ethash_return_value_t res = ethash_light_compute(cache, header_hash_v8, nonce);
+    ethash_return_value_t res = ethash_light_compute(cache, *header_hash, nonce);
 //  if (!ret.success) {
 //    return Nan::ThrowError(LIGHTCOMPUTE_ERROR);
 //  }
@@ -205,11 +205,10 @@ NAN_METHOD(ethash_light_compute_internal) {
   // node -> C
   const uint64_t nonce = be64toh(*((uint64_t *) node::Buffer::Data(nonce_v8)));
 
-  ethash_return_value_t ret = ethash_light_compute_internal(
-    &light, full_size, *header_hash, nonce);
-  if (!ret.success) {
-    return Nan::ThrowError(LIGHTCOMPUTE_ERROR);
-  }
+  ethash_return_value_t ret = ethash_light_compute_internal(&light, full_size, *header_hash, nonce);
+//  if (!ret.success) {
+//    return Nan::ThrowError(LIGHTCOMPUTE_ERROR);
+//  }
 
   // C -> node
   v8::Local<v8::Object> obj = Nan::New<v8::Object>();

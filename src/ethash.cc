@@ -23,7 +23,7 @@
 
 #define ETCHASH_EPOCH_LENGTH 60000U
 #define ETHASH_EPOCH_LENGTH 30000U
-#define ETCHASH_EPOCH_HEIGHT 11700000U  //11700000  2520000
+#define ETCHASH_EPOCH_HEIGHT 2520000U  //11700000  2520000
 // ethash_light_new(block_number)
 // returns: { block_number: Number, cache: Buffer }
 NAN_METHOD(ethash_light_new) {

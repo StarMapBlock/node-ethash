@@ -70,21 +70,21 @@ NAN_METHOD(ethash_light_compute) {
   light.block_number = block_number_v8->IntegerValue();
 
   // get cache argument
-  v8::Local<v8::Object> cache_v8 = info[1].As<v8::Object>();
-  CHECK_TYPE_BUFFER(cache_v8, CACHE_TYPE_INVALID);
-  // node -> C
-  light.cache = (void *) node::Buffer::Data(cache_v8);
-  light.cache_size = node::Buffer::Length(cache_v8);
+//  v8::Local<v8::Object> cache_v8 = info[1].As<v8::Object>();
+//  CHECK_TYPE_BUFFER(cache_v8, CACHE_TYPE_INVALID);
+//  // node -> C
+//  light.cache = (void *) node::Buffer::Data(cache_v8);
+//  light.cache_size = node::Buffer::Length(cache_v8);
 
   // get header hash
-  v8::Local<v8::Object> header_hash_v8 = info[2].As<v8::Object>();
+  v8::Local<v8::Object> header_hash_v8 = info[1].As<v8::Object>();
   CHECK_TYPE_BUFFER(header_hash_v8, HEADERHASH_TYPE_INVALID);
   CHECK_BUFFER_LENGTH(header_hash_v8, 32, HEADERHASH_LENGTH_INVALID);
   // node -> C
   ethash_h256_t *header_hash = (ethash_h256_t *) node::Buffer::Data(header_hash_v8);
 
   // get nonce argument
-  v8::Local<v8::Object> nonce_v8 = info[3].As<v8::Object>();
+  v8::Local<v8::Object> nonce_v8 = info[2].As<v8::Object>();
   CHECK_TYPE_BUFFER(nonce_v8, NONCE_TYPE_INVALID);
   CHECK_BUFFER_LENGTH(nonce_v8, 8, NONCE_LENGTH_INVALID);
 //  ethash_h256_t header_hash;

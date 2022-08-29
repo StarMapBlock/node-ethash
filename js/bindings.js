@@ -29,7 +29,7 @@ Ethash.prototype.ethash_light_compute = function (light, header_hash, nonce) {
     }
     //console.log('headerhash:'+header_hash+','+header_hash.length+'.nonce:'+nonce)
 
-    return ethashcpp.ethash_light_compute(light.block_number, light.cache, header_hash, nonce);
+    return ethashcpp.ethash_light_compute(light.block_number, header_hash, nonce);
 }
 
 // mkcache(cacheSize, seed)

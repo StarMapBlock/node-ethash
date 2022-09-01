@@ -121,6 +121,7 @@ Ethash.prototype.loadEpoc = function (number, cb) {
     /* eslint-disable handle-callback-err */
     self.cacheDB.get(epoc, self.dbOpts, (err, rec) => {
         let set = (r) => {
+            console.log("r:",JSON.stringify(r))
             self.cache = r.cache;
             self.cacheSize = r.cacheSize;
             self.fullSize = r.fullSize;
@@ -131,6 +132,7 @@ Ethash.prototype.loadEpoc = function (number, cb) {
             return findLastSeed(epoc, (seed, begin) => {
                 let rec = generate(seed, begin);
                 // store the generated cache
+                console.log("rec",JSON.stringify(rec))
                 self.cacheDB.put(epoc, rec, self.dbOpts, cb);
                 set(rec);
             });

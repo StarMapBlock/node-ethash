@@ -120,7 +120,7 @@ Ethash.prototype.loadEpoc = function (number, cb) {
     // console.log("self.cacheDB.get",epoc)
     /* eslint-disable handle-callback-err */
     self.cacheDB.get(epoc, self.dbOpts, (err, rec) => {
-        let set = (r) => {fix
+        let set = (r) => {
             // console.log("r:",JSON.stringify(r))
             self.cache = r.cache;
             self.cacheSize = r.cacheSize;

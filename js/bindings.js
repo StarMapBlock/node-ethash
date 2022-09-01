@@ -133,7 +133,7 @@ Ethash.prototype.loadEpoc = function (number, cb) {
             return findLastSeed(epoc, (seed, begin) => {
                 let rec = generate(seed, begin);
                 // store the generated cache
-                console.log("rec",rec)
+                // console.log("rec",rec)
                 self.cacheDB.put(epoc, rec, self.dbOpts, cb);
                 set(rec);
             });
@@ -198,7 +198,7 @@ Ethash.prototype.loadNextEpoc = function (epoc, cb) {
             return findLastSeed(epoc, (seed, begin) => {
                 let rec = generate(seed, begin);
                 // store the generated cache
-                console.log("rec",rec)
+                // console.log("rec",rec)
                 self.cacheDB.put(epoc, rec, self.dbOpts, cb);
                 set(rec);
             });

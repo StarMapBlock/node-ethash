@@ -92,7 +92,7 @@ Ethash.prototype.loadEpoc = function (number, cb) {
     }
 
     this.epoc = epoc;
-
+    console.log("epoc",this.epoc)
     // gives the seed the first epoc found
     let findLastSeed = (ep, cb2) => {
         if (ep === 0) {
@@ -117,7 +117,7 @@ Ethash.prototype.loadEpoc = function (number, cb) {
             cache: self.mkcache(cacheSize, seed)
         };
     };
-
+    console.log("self.cacheDB.get",epoc)
     /* eslint-disable handle-callback-err */
     self.cacheDB.get(epoc, self.dbOpts, (err, rec) => {
         let set = (r) => {

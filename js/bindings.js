@@ -61,7 +61,7 @@ Ethash.prototype.doHash = function(val, nonce) {
 Ethash.prototype.headerHash = ethashjs.prototype.headerHash;
 
 Ethash.prototype.cacheHash = function (state) {
-  return ethUtil.sha3((state || this).cache);
+    return ethUtil.sha3((state || this).cache);
 }
 
 // Get current epoch
@@ -120,8 +120,9 @@ Ethash.prototype.loadEpoc = function (number, cb) {
     // console.log("self.cacheDB.get",epoc)
     /* eslint-disable handle-callback-err */
     self.cacheDB.get(epoc, self.dbOpts, (err, rec) => {
+
         let set = (r) => {
-            // console.log("r:",JSON.stringify(r))
+            console.log("r:",r)
             self.cache = r.cache;
             self.cacheSize = r.cacheSize;
             self.fullSize = r.fullSize;
@@ -132,7 +133,72 @@ Ethash.prototype.loadEpoc = function (number, cb) {
             return findLastSeed(epoc, (seed, begin) => {
                 let rec = generate(seed, begin);
                 // store the generated cache
-                // console.log("rec",JSON.stringify(rec))
+                console.log("rec",rec)
+                self.cacheDB.put(epoc, rec, self.dbOpts, cb);
+                set(rec);
+            });
+        }
+        set(rec);
+    });
+    /* eslint-enable handle-callback-err */
+}
+/**
+ * Loads the seed and the cache given epoc
+ * @method loadNextEpoc
+ * @param epoc Number
+ * @param cb function
+ */
+Ethash.prototype.loadNextEpoc = function (epoc, cb) {
+    // const epoc = ethHashUtil.getEpoc(number);
+    let self = this;
+
+    if (this.epoc === epoc) {
+        return cb();
+    }
+
+    this.epoc = epoc;
+    // console.log("epoc",this.epoc)
+    // gives the seed the first epoc found
+    let findLastSeed = (ep, cb2) => {
+        if (ep === 0) {
+            return cb2(ethUtil.zeros(32), 0);
+        }
+
+        self.cacheDB.get(ep, self.dbOpts, function (err, data) {
+            if (!err) {
+                cb2(data.seed, ep);
+            } else {
+                findLastSeed(ep - 1, cb2);
+            }
+        });
+    };
+
+    let generate = (curr, begin) => {
+        let [cacheSize, fullSize, seed] = [ethHashUtil.getCacheSize(epoc), ethHashUtil.getFullSize(epoc), ethHashUtil.getSeed(curr, begin, epoc)];
+        return {
+            cacheSize: cacheSize,
+            fullSize: fullSize,
+            seed: seed,
+            cache: self.mkcache(cacheSize, seed)
+        };
+    };
+    // console.log("self.cacheDB.get",epoc)
+    /* eslint-disable handle-callback-err */
+    self.cacheDB.get(epoc, self.dbOpts, (err, rec) => {
+
+        let set = (r) => {
+            console.log("r:",r)
+            self.cache = r.cache;
+            self.cacheSize = r.cacheSize;
+            self.fullSize = r.fullSize;
+            self.seed = new Buffer(r.seed);
+            cb(self);
+        };
+        if (!rec) {
+            return findLastSeed(epoc, (seed, begin) => {
+                let rec = generate(seed, begin);
+                // store the generated cache
+                console.log("rec",rec)
                 self.cacheDB.put(epoc, rec, self.dbOpts, cb);
                 set(rec);
             });

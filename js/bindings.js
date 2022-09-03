@@ -187,7 +187,7 @@ Ethash.prototype.loadNextEpoc = function (epoc, cb) {
     self.cacheDB.get(epoc, self.dbOpts, (err, rec) => {
 
         let set = (r) => {
-            console.log("r:",r)
+            // console.log("r:",r)
             self.cache = r.cache;
             self.cacheSize = r.cacheSize;
             self.fullSize = r.fullSize;

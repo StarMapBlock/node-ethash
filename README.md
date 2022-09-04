@@ -1,10 +1,10 @@
-# node-ethash
+# node-ethash Power By StarMap
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
-Native node bindings for [Ethash cpp implementation](https://github.com/ethereum/ethash).
+Native node bindings for [Etchash cpp implementation](https://github.com/ethereum/ethash).
 This library is experimental. **Use at your own risk**.
-Currently working on **Linux only**. Tested on node v5.10.1.
+Currently working on **Linux only (Tested 20.04Ubuntu)**. Tested on node v10.24.1 and npm v6.14.12
 
 For details on this project, please see the Ethereum wiki (https://github.com/ethereum/wiki/wiki/Ethash)
 and ethereumjs/ethashjs (https://github.com/ethereumjs/ethashjs).
@@ -12,7 +12,7 @@ and ethereumjs/ethashjs (https://github.com/ethereumjs/ethashjs).
 ## Installation
 
 ```
-$ git clone https://github.com/ethereumjs/node-ethash.git
+$ git clone https://github.com/StarMapBlock/etchashjs.git
 $ cd node-ethash/
 $ git submodule init
 $ git submodule update
@@ -20,6 +20,11 @@ $ npm install
 ```
 
 ## API
+
+If you are using ETC Mordor to test your network, change ETCHASH_EPOCH_HEIGHT to 2520000
+```
+#define ETCHASH_EPOCH_HEIGHT 2520000U
+```
 
 - [`new Ethash([cacheDB])`](#newethashcachedb)
 - [`ethash.verifyPOW(block, cb)`](#ethashverifypowblock-cb)
@@ -98,11 +103,13 @@ ethashjs x 17.82 ops/sec ±1.58% (48 runs sampled)
 ==================================================
 ```
 
+
 ## TODO:
 - Implement tests for:
   - [`ethash.verifyPOW()`](#ethashverifypowblock-cb)
   - [`ethash.loadEpoc()`](#ethashloadepocnumber-cb)
 - Create more fixtures for [`ethash.run()`](#ethashrunval-nonce-fullsize)'s tests
+
 
 ## LICENSE
 

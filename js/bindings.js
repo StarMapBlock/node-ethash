@@ -209,56 +209,56 @@ Ethash.prototype.loadNextEpoc = function (epoc, cb) {
     /* eslint-enable handle-callback-err */
 }
 
-Ethash.prototype.loadEpoc2 = function (number, cb) {
-    var self = this
-    const epoc = ethHashUtil.getEpoc(number)
-    if (this.epoc === epoc) {
-        return cb()
-    }
-
-    this.epoc = epoc
-
-    // gives the seed the first epoc found
-    function findLastSeed (epoc, cb2) {
-        if (epoc === 0) {
-            return cb2(ethUtil.zeros(32), 0)
-        }
-
-        self.cacheDB.get(epoc, self.dbOpts, function (err, data) {
-            if (!err) {
-                cb2(data.seed, epoc)
-            } else {
-                findLastSeed(epoc - 1, cb2)
-            }
-        })
-    }
-
-    /* eslint-disable handle-callback-err */
-    self.cacheDB.get(epoc, self.dbOpts, function (err, data) {
-        if (!data) {
-            self.cacheSize = ethHashUtil.getCacheSize(epoc)
-            self.fullSize = ethHashUtil.getFullSize(epoc)
-
-            findLastSeed(epoc, function (seed, foundEpoc) {
-                self.seed = ethHashUtil.getSeed(seed, foundEpoc, epoc)
-                var cache = self.mkcache(self.cacheSize, self.seed)
-                // store the generated cache
-                self.cacheDB.put(epoc, {
-                    cacheSize: self.cacheSize,
-                    fullSize: self.fullSize,
-                    seed: self.seed,
-                    cache: cache
-                }, self.dbOpts, cb)
-            })
-        } else {
-            // Object.assign(self, data)
-            // cache is a single Buffer here! Not an array of cache lines.
-            self.cache = data.cache
-            self.cacheSize = data.cacheSize
-            self.fullSize = data.fullSize
-            self.seed = new Buffer(data.seed)
-            cb()
-        }
-    })
-    /* eslint-enable handle-callback-err */
-}
+// Ethash.prototype.loadEpoc2 = function (number, cb) {
+//     var self = this
+//     const epoc = ethHashUtil.getEpoc(number)
+//     if (this.epoc === epoc) {
+//         return cb()
+//     }
+//
+//     this.epoc = epoc
+//
+//     // gives the seed the first epoc found
+//     function findLastSeed (epoc, cb2) {
+//         if (epoc === 0) {
+//             return cb2(ethUtil.zeros(32), 0)
+//         }
+//
+//         self.cacheDB.get(epoc, self.dbOpts, function (err, data) {
+//             if (!err) {
+//                 cb2(data.seed, epoc)
+//             } else {
+//                 findLastSeed(epoc - 1, cb2)
+//             }
+//         })
+//     }
+//
+//     /* eslint-disable handle-callback-err */
+//     self.cacheDB.get(epoc, self.dbOpts, function (err, data) {
+//         if (!data) {
+//             self.cacheSize = ethHashUtil.getCacheSize(epoc)
+//             self.fullSize = ethHashUtil.getFullSize(epoc)
+//
+//             findLastSeed(epoc, function (seed, foundEpoc) {
+//                 self.seed = ethHashUtil.getSeed(seed, foundEpoc, epoc)
+//                 var cache = self.mkcache(self.cacheSize, self.seed)
+//                 // store the generated cache
+//                 self.cacheDB.put(epoc, {
+//                     cacheSize: self.cacheSize,
+//                     fullSize: self.fullSize,
+//                     seed: self.seed,
+//                     cache: cache
+//                 }, self.dbOpts, cb)
+//             })
+//         } else {
+//             // Object.assign(self, data)
+//             // cache is a single Buffer here! Not an array of cache lines.
+//             self.cache = data.cache
+//             self.cacheSize = data.cacheSize
+//             self.fullSize = data.fullSize
+//             self.seed = new Buffer(data.seed)
+//             cb()
+//         }
+//     })
+//     /* eslint-enable handle-callback-err */
+// }
